@@ -1,14 +1,13 @@
-````markdown
 # Single Select
 
 The idea is that when a user clicks on an accordion item, the index associated with that item is passed to the `setSelected` state, which updates the `selected` state to that index. When the `selected` index matches the `item.id`, the corresponding answer is shown.
 
-### Conditional Rendering
+# Conditional Rendering
 
 ```javascript
 selected === dataItem.id && <div className="content">{dataItem.answer}</div>;
 ```
-````
+
 
 # MultiSelect
 
@@ -41,9 +40,4 @@ enableMultiSelection
   : selected === dataItem.id && (
       <div className="content">{dataItem.answer}</div>
     );
-```
-
-```
-
-This Markdown file provides a clear and structured explanation of both single and multi-select functionalities, including how conditional rendering is handled.
 ```
