@@ -4,7 +4,6 @@ Here’s a Markdown file explaining the `StarRating` component in a simple and c
 # StarRating Component
 
 The `StarRating` component allows users to rate something using stars. Users can click on a star to set their rating or hover over stars to preview a rating.
-
 ## How It Works
 
 1. **State Management**:
