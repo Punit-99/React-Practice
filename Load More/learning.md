@@ -294,7 +294,4 @@ if (loading) {
 
 ```
 
----
-
-This Markdown file breaks down each part of the code, explaining it in simple and basic language for easier understanding.
 ```
