@@ -113,69 +113,6 @@ The `MenuList` component takes a list of menu items and displays them as a list.
 
 ## 4. **The `menus` Array**
 
-```javascript
-export const menus = [
-  {
-    label: "Home",
-    to: "/",
-  },
-  {
-    label: "Profile",
-    to: "/profile",
-    children: [
-      {
-        label: "Details",
-        to: "details",
-        children: [
-          {
-            label: "Location",
-            to: "location",
-            children: [
-              {
-                label: "City",
-                to: "city",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Settings",
-    to: "/settings",
-    children: [
-      {
-        label: "Account",
-        to: "account",
-      },
-      {
-        label: "Security",
-        to: "security",
-        children: [
-          {
-            label: "Login",
-            to: "login",
-          },
-          {
-            label: "Register",
-            to: "register",
-            children: [
-              {
-                label: "Random data",
-                to: "",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
-
-export default menus;
-```
-
 # What It Is:
 
 This is the list of all the menu items you have. It's like a map of your entire menu structure, including the main items and their sub-items.
