@@ -1,140 +1,207 @@
-# 1. TreeView Component
+Here's a simplified explanation in more basic, human-friendly language:
 
-## Purpose:
+---
 
-The `TreeView` component is like a container that displays a list of menus. It's designed to create a hierarchical (tree#like) structure, where you can have items that contain sub#items.
+# Understanding the Menu Components
 
-## How It Works:
+## 1. **TreeView Component**
 
-# **Importing Components and Styles:** It imports a `MenuList` component, which is responsible for rendering the list of menus, and a CSS file (`style.css`) for styling.
+```javascript
+import MenuList from "./menuList";
+import "./style.css";
 
-# **Props:** The `TreeView` function takes a `menus` prop, which is expected to be an array. By default, this array is empty if no data is passed.
-
-# **Rendering:** Inside the component, it returns a `div` element with a class `tree#view#container` that wraps the `MenuList` component. The `menus` array is passed to `MenuList` as a prop called `list`.
-
-# 2. MenuItem Component
-
-## Purpose:
-
-The `MenuItem` component represents a single item in the menu. If the item has sub#items (children), it can expand or collapse to show or hide those sub#items.
-
-## How It Works:
-
-# **State Management:** The component uses `useState` from React to track whether each item's children are displayed.
-
-# **Rendering Icons:** It imports two icons (`FaMinus` and `FaPlus`) to indicate whether the item is expanded or collapsed.
-
-# **Handling Clicks:** The `handleToggleChildren` function toggles the visibility of the sub#items when a user clicks on the item. It updates the `displayCurrentChildren` state.
-
-# **Rendering the Menu Item:** The component returns a `li` (list item) element with the item's label and a button to toggle the visibility of children (if any). If the item has children and they are set to display, it renders another `MenuList` with those children.
-
-# 3. MenuList Component
-
-## Purpose:
-
-The `MenuList` component is responsible for displaying a list of `MenuItem` components. It represents a collection of menu items, potentially including sub#menus.
-
-## How It Works:
-
-# **Rendering the List:** The `MenuList` function takes a `list` prop, which is an array of items (each item can have its own label and children). It returns an `ul` (unordered list) element with a class `menu#list#container`.
-
-# **Mapping Items:** Inside the `ul`, it maps over the `list` array and creates a `MenuItem` component for each item. If the `list` array is empty, nothing is rendered.
-
-# 4. The `menus` Array
-
-## Purpose:
-
-This array, called `menus`, is a list of menu items that will be displayed in a tree structure. Each item in the array represents a menu option and can have sub#items, called `children`.
-
-## How It Works:
-
-# **Label and To:** Each menu item has a `label` (the name displayed on the menu) and a `to` (which could be a URL path or a link to another part of the application).
-
-# **Children:** Some menu items have `children`, meaning they contain sub#menus. These children can also have their own children, creating a nested structure.
-
-## Example Breakdown:
-
-# **Home:**
-
-# A simple menu item with no children. It links to the root of the application (`/`).
-
-# **Profile:**
-
-# This item has a sub#menu. When you click on "Profile," it expands to show "Details."
-
-# **Details:**
-
-    # A sub#menu under "Profile" that expands to show "Location."
-    # **Location:**
-      # A sub#menu under "Details" that expands to show "City."
-      # **City:**
-        # The last level in this chain, with no further sub#menus.
-
-# **Settings:**
-
-# This item also has a sub#menu. When you click on "Settings," it expands to show "Account" and "Security."
-
-# **Account:**
-
-    # A simple menu item with no children.
-
-# **Security:**
-
-    # A sub#menu that expands to show "Login" and "Register."
-    # **Register:**
-      # A sub#menu that expands to show "Random data."
-
-# 5. Component Interaction
-
-Here’s how the components interact with each other based on the `menus` structure:
-
-# **TreeView Component:**
-
-# **What It Does:** It acts as the main container that holds the entire menu structure.
-
-# **What It Calls:** It calls the `MenuList` component and passes the `menus` array to it.
-
-```markdown
-TreeView => MenuList (with menus as list)
+export default function TreeView({ menus = [] }) {
+  return (
+    <div className="tree-view-container">
+      <MenuList list={menus} />
+    </div>
+  );
+}
 ```
 
-# **MenuList Component:**
+# What It Does:
 
-# **What It Does:** It takes a list of menu items (like the `menus` array) and renders each item using the `MenuItem` component.
+The `TreeView` component is like a big box that holds a list of menu items. Imagine it as a container that shows all the main options (like "Home," "Profile," "Settings") that you can click on.
 
-# **What It Calls:** For each item in the list, it calls the `MenuItem` component.
+# How It Works:
 
-```markdown
-MenuList (with menus list) => MenuItem (for each item in the list)
+- It takes a list of menu items (called `menus`) and passes them to another component called `MenuList`.
+- If no menu items are provided, it uses an empty list by default.
+- The `TreeView` just sets up the space where the menu will be shown.
+
+## 2. **MenuItem Component**
+
+```javascript
+import { useState } from "react";
+import MenuList from "./menuList";
+import { FaMinus, FaPlus } from "react-icons/fa";
+
+export default function MenuItem({ item }) {
+  const [displayCurrentChildren, setDisplayCurrentChildren] = useState({});
+
+  function handleToggleChildren(getCurrentlabel) {
+    setDisplayCurrentChildren({
+      ...displayCurrentChildren,
+      [getCurrentlabel]: !displayCurrentChildren[getCurrentlabel],
+    });
+  }
+
+  console.log(displayCurrentChildren);
+
+  return (
+    <li>
+      <div className="menu-item">
+        <p>{item.label}</p>
+        {item && item.children && item.children.length ? (
+          <span onClick={() => handleToggleChildren(item.label)}>
+            {displayCurrentChildren[item.label] ? (
+              <FaMinus color="#fff" size={25} />
+            ) : (
+              <FaPlus color="#fff" size={25} />
+            )}
+          </span>
+        ) : null}
+      </div>
+
+      {item &&
+      item.children &&
+      item.children.length > 0 &&
+      displayCurrentChildren[item.label] ? (
+        <MenuList list={item.children} />
+      ) : null}
+    </li>
+  );
+}
 ```
 
-# **MenuItem Component:**
+# What It Does:
 
-# **What It Does:** It represents a single menu item. If the item has children, it can expand or collapse to show or hide those children.
+The `MenuItem` component represents a single menu item, like "Profile" or "Settings." If this item has sub-options (like "Details" under "Profile"), it can expand to show them or collapse to hide them.
 
-# **What It Calls:** If an item has children, it calls `MenuList` again to display the sub#items.
+# How It Works:
 
-```markdown
-MenuItem => MenuList (for its children, if any)
+- It uses a `useState` hook to keep track of whether the sub-options are visible.
+- When you click on the item, it shows or hides the sub-options. For example, clicking "Profile" can reveal or hide "Details."
+- If there are sub-options, it shows either a plus (`+`) or minus (`-`) icon to indicate whether the list is expanded or collapsed.
+- If the item has children (sub-options), it calls `MenuList` to display them underneath.
+
+## 3. **MenuList Component**
+
+```javascript
+import MenuItem from "./menuItem";
+
+export default function MenuList({ list = [] }) {
+  return (
+    <ul className="menu-list-container">
+      {list && list.length
+        ? list.map((listItem) => <MenuItem item={listItem} />)
+        : null}
+    </ul>
+  );
+}
 ```
 
-# 6. Example Flow
+# What It Does:
 
-Let’s walk through an example:
+The `MenuList` component takes a list of menu items and displays them as a list. Each item in this list is handled by the `MenuItem` component.
 
-# **TreeView** receives the `menus` array and calls **MenuList** with it.
+# How It Works:
 
-# **MenuList** iterates over the `menus` array and calls **MenuItem** for each item:
+- It receives a list of menu items.
+- It goes through each item in the list and creates a `MenuItem` for each one.
+- If the list is empty, nothing is shown.
 
-# **MenuItem** renders "Home" (no children, so nothing else is called).
+## 4. **The `menus` Array**
 
-# **MenuItem** renders "Profile" and sees it has children, so it calls **MenuList** for the children.
+```javascript
+export const menus = [
+  {
+    label: "Home",
+    to: "/",
+  },
+  {
+    label: "Profile",
+    to: "/profile",
+    children: [
+      {
+        label: "Details",
+        to: "details",
+        children: [
+          {
+            label: "Location",
+            to: "location",
+            children: [
+              {
+                label: "City",
+                to: "city",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Settings",
+    to: "/settings",
+    children: [
+      {
+        label: "Account",
+        to: "account",
+      },
+      {
+        label: "Security",
+        to: "security",
+        children: [
+          {
+            label: "Login",
+            to: "login",
+          },
+          {
+            label: "Register",
+            to: "register",
+            children: [
+              {
+                label: "Random data",
+                to: "",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
 
-    # **MenuList** (for Profile’s children) calls **MenuItem** for "Details."
-      # **MenuItem** renders "Details" and sees it has children, so it calls **MenuList** for the children.
-        # **MenuList** (for Details’ children) calls **MenuItem** for "Location."
-          # **MenuItem** renders "Location" and sees it has children, so it calls **MenuList** for the children.
-            # **MenuList** (for Location’s children) calls **MenuItem** for "City."
-              # **MenuItem** renders "City" (no children, so nothing else is called).
+export default menus;
+```
 
-# The process continues similarly for "Settings" and its children.
+# What It Is:
+
+This is the list of all the menu items you have. It's like a map of your entire menu structure, including the main items and their sub-items.
+
+# How It Works:
+
+- **Home:** A simple menu item that links to the homepage.
+- **Profile:** A menu item that has sub-options like "Details," which also has its own sub-options like "Location" and "City."
+- **Settings:** A menu item with sub-options like "Account" and "Security." "Security" has more sub-options like "Login" and "Register."
+
+## 5. **How They Work Together**
+
+- **TreeView**: The starting point that holds the entire menu.
+  - Calls **MenuList** to display the list of menu items.
+- **MenuList**: Displays each menu item in the list.
+  - Calls **MenuItem** for each item.
+- **MenuItem**: Shows each item and handles expanding or collapsing if the item has sub-options.
+  - Calls **MenuList** again if the item has children (sub-options).
+
+# Example Flow:
+
+- `TreeView` starts with the `menus` list.
+- It passes this list to `MenuList`, which goes through each menu item.
+- For "Profile," `MenuItem` shows "Profile" and then calls `MenuList` to display its sub-items, like "Details."
+- The process continues down the chain, showing and hiding items as needed.
+
+---
+
+This explanation breaks down each part of the menu system in simple terms, showing how they work individually and how they connect to form the whole menu.
