@@ -1,7 +1,3 @@
-Here's a simplified explanation in more basic, human-friendly language:
-
----
-
 # Understanding the Menu Components
 
 ## 1. **TreeView Component**
@@ -138,7 +134,3 @@ This is the list of all the menu items you have. It's like a map of your entire 
 - It passes this list to `MenuList`, which goes through each menu item.
 - For "Profile," `MenuItem` shows "Profile" and then calls `MenuList` to display its sub-items, like "Details."
 - The process continues down the chain, showing and hiding items as needed.
-
----
-
-This explanation breaks down each part of the menu system in simple terms, showing how they work individually and how they connect to form the whole menu.
