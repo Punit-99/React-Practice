@@ -291,7 +291,3 @@ if (loading) {
 - **Button Display**:
   - Button to load more products, disabled after 100 products.
   - Displays a message after the button is disabled.
-
-```
-
-```
